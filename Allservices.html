@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Local Hands - Repairs & Services</title>
+  <link rel="stylesheet" href="Allservices.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="nav-left">
+      <img src="assets/logo.jpg" alt="logo" class="logo">
+    </div>
+    <div class="nav-center">
+      <a href="index.html#home">Home</a>
+      <a href="index.html#aboutprovs">About Us</a>
+      <a href="/form.html">Become a Provider</a>
+      <a href="booking-status.html#booking-status">Booking Status</a>
+    </div>
+    <div class="nav-right">
+      <div class="hamburger" onclick="openMenu()">☰</div>
+    </div>
+  </div>
+
+  <!-- Sidebar Menu (for mobile) -->
+  <div class="Sidebar" id="sidebar">
+    <div class="close-icon" onclick="closeMenu()">✖</div>
+    <a href="index.html#home">Home</a>
+    <a href="index.html#aboutprovs">About Us</a>
+    <a href="/form.html">Become a Provider</a>
+    <a href="booking-status.html#booking-status">Booking Status</a>
+    <a href="login.html">Sign In</a>
+  </div>
+
+  <!-- Header Section -->
+  <header class="page-header">
+    <h1>Repairs & Services</h1>
+   <div class="filter-buttons">
+  <button onclick="filterCards(event, 'all')">All</button>
+  <button onclick="filterCards(event, 'appliance')">Appliances</button>
+  <button onclick="filterCards(event, 'electronics')">Electronics</button>
+  <button onclick="filterCards(event, 'vehicle')">Vehicles</button>
+  <button onclick="filterCards(event, 'other')">Others</button>
+</div>
+
+<div id="cardGrid" class="card-grid"></div>
+
+  </header>
+
+  <!-- Card Grid -->
+  <section class="card-grid" id="cardGrid">
+    <!-- Cards will be injected from JS -->
+  </section>
+
+  <script src="Allservices.js"></script>
+  <script>
+    function openMenu() {
+      document.getElementById("sidebar").style.left = "0";
+    }
+
+    function closeMenu() {
+      document.getElementById("sidebar").style.left = "-100%";
+    }
+  </script>
+</body>
+</html>

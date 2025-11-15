@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Status - Local Hands</title>
+
+    <script src="https://kit.fontawesome.com/f09ceee3c1.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .navbar {
+            height: 90px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+            background-color: #f9ffff;
+            border-bottom: 1px solid #ccc;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .nav-left img {
+            padding-top: 16px;
+            width: 120px;
+            height: 100px;
+            align-self: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .logo,
+        .nav-right a,
+        .location-icon,
+        .dropdown-icon {
+            color: #111111;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: rgb(0, 0, 0);
+            margin: 0;
+        }
+
+        .nav-left {
+            flex: 1;
+        }
+
+        .nav-center {
+            flex: 2;
+            display: flex;
+            justify-content: space-between;
+            /* gap: 1rem; */
+        }
+
+        .nav-center a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            transition: color 0.2s;
+        }
+
+        .nav-center a:hover {
+            color: #fc6919;
+        }
+
+
+        .dropdown-icon {
+            font-size: 12px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .nav-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .nav-right a {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+            color: #222;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+
+        .hamburger {
+            display: none;
+            font-size: 2rem;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+
+        .booking-status-section {
+            padding: 50px 20px;
+            background-color: #e0e0e0;
+            min-height: calc(100vh - 200px);
+        }
+
+        .booking-status-section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.8em;
+            color: #ff8c00;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .back-button-container {
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            background-color: #ccc;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background-color: #bbb;
+        }
+
+
+        .booking-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .booking-category {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            padding: 30px;
+            border: 1px solid #dcdcdc;
+        }
+
+        .booking-category h3 {
+            font-size: 2em;
+            color: #ff8c00;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ffbe73;
+            padding-bottom: 10px;
+        }
+
+        .booking-item {
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            border-bottom: 1px dashed #cccccc;
+        }
+
+        .booking-item:last-child {
+            border-bottom: none;
+        }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .booking-header h4 {
+            font-size: 1.4em;
+            color: #333333;
+            margin: 0;
+        }
+
+        .booking-status {
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-confirmed {
+            background-color: #d4edda;
+            color: #28a745;
+        }
+
+        .status-on-the-way {
+            background-color: #fff3cd;
+            color: #ffa500;
+        }
+
+        .status-in-progress {
+            background-color: #d1ecf1;
+            color: #17a2b8;
+        }
+
+        .status-completed {
+            background-color: #e9ecef;
+            color: #6c757d;
+        }
+
+        .status-canceled {
+            background-color: #f8d7da;
+            color: #dc3545;
+        }
+
+        .status-pending {
+            background-color: #ffeeba;
+            color: #ffc107;
+        }
+
+        .booking-details p {
+            margin: 6px 0;
+            color: #555555;
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        .booking-details p strong {
+            color: #333333;
+        }
+
+        .booking-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .booking-actions button {
+            background-color: #ff8c00;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .booking-actions button:hover {
+            background-color: #e67e00;
+            transform: translateY(-2px);
+        }
+
+        .booking-actions .cancel-btn {
+            background-color: #cc4e4e;
+        }
+
+        .booking-actions .cancel-btn:hover {
+            background-color: #b83d3d;
+        }
+
+        .booking-actions .review-btn {
+            background-color: #4CAF50;
+        }
+
+        .booking-actions .review-btn:hover {
+            background-color: #45a049;
+        }
+
+        .no-bookings {
+            text-align: center;
+            color: #888888;
+            font-size: 1.2em;
+            padding: 30px;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .booking-container {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .booking-status-section h2 {
+                font-size: 2em;
+            }
+
+            .booking-category {
+                padding: 20px;
+            }
+
+            .booking-category h3 {
+                font-size: 1.5em;
+            }
+
+            .booking-header h4 {
+                font-size: 1.1em;
+            }
+
+            .booking-actions button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
+        .footer {
+            background: #e1c4a6;
+            color: black;
+            padding: 60px 40px 30px;
+            font-family: 'Segoe UI', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer .logo-col {
+            width: 250px;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer .footlogo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .footer .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .footer .col {
+            flex: 1 1 200px;
+            min-width: 200px;
+        }
+
+        .footer p {
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        .footer h3 {
+            color: black;
+            margin-bottom: 15px;
+            position: relative;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .footer .underline span {
+            display: block;
+            width: 40px;
+            height: 3px;
+            background: #ff7b00;
+            margin-top: 5px;
+            border-radius: 2px;
+            animation: expandLine 1s ease forwards;
+        }
+
+        @keyframes expandLine {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 70px;
+            }
+        }
+
+        .footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer ul li a {
+            color: black;
+            text-decoration: none;
+            display: inline-block;
+            margin: 8px 0;
+            transition: all 0.3s ease;
+        }
+
+        .footer ul li a:hover {
+            color: #ff7b00;
+            transform: translateX(5px);
+        }
+
+        .footer form {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            background: #222;
+            padding: 8px 12px;
+            border-radius: 25px;
+            border: 1px solid #333;
+        }
+
+        .fa-envelope {
+            color: #ff7b00;
+        }
+
+        .footer form input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: white;
+            padding: 8px;
+        }
+
+        .footer form button {
+            border: none;
+            background: #ff7b00;
+            color: black;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .footer form button:hover {
+            background: #e76700;
+        }
+
+        .footer .social-ic {
+            margin-top: 20px;
+        }
+
+        .footer .social-ic i {
+            font-size: 20px;
+            margin-right: 15px;
+            color: black;
+            transition: transform 0.3s ease, color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .footer .social-ic i:hover {
+            color: #ff7b00;
+            transform: scale(1.2);
+        }
+
+        .footer hr {
+            border-color: rgb(0, 0, 0);
+            margin-top: 30px;
+        }
+
+        .footer .copyrights {
+            text-align: center;
+            font-size: 14px;
+            color: black;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="nav-left">
+            <img src="assets/logo.jpg" alt="logo" class="logo">
+        </div>
+        <div class="nav-center">
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="/form.html">Become a Provider</a>
+            <a href="Allservices.html">Services</a>
+            <a href="booking-status.html">Booking Status</a>
+        </div>
+        <div class="nav-right">
+            <div class="hamburger" onclick="openMenu()">☰</div>
+        </div>
+    </div>
+    <div class="booking-status-section" id="booking-status">
+        <div class="back-button-container">
+            <button class="back-button" onclick="window.history.back()">← Back</button>
+        </div>
+        <h2>Your Booking Status</h2>
+        <div class="booking-container">
+            <div class="booking-category">
+                <h3>Current Bookings</h3>
+                <div class="booking-list" id="currentBookingsList">
+                </div>
+                <div class="no-bookings" id="noCurrentBookings" style="display: none;">No current bookings.</div>
+            </div>
+
+            <div class="booking-category">
+                <h3>Past Bookings</h3>
+                <div class="booking-list" id="pastBookingsList">
+                </div>
+                <div class="no-bookings" id="noPastBookings" style="display: none;">No past bookings.</div>
+            </div>
+
+            <div class="booking-category">
+                <h3>All Bookings</h3>
+                <div class="booking-list" id="allBookingsList">
+                </div>
+                <div class="no-bookings" id="noAllBookings" style="display: none;">You have no bookings.</div>
+            </div>
+        </div>
+    </div>
+    <hr style="border: none; border-top: 4px solid #111; margin: 40px 0 0 0; width: 100%;">
+    <div class="footer">
+        <div class="row">
+            <div class="col logo-col">
+                <img src="./assets/localhandsicon.jpg" alt="icon" class="footlogo">
+            </div>
+            <div class="col">
+                <h3>Aditya University
+                    <div class="underline"><span></span></div>
+                </h3>
+                <p>Technical Hub</p>
+                <p>Surampalem</p>
+                <p>AndhraPradesh, India</p>
+                <p class="email-id">email@gmail.com</p>
+                <h4>+91 - 1122334455</h4>
+            </div>
+            <div class="col">
+                <h3>Links <div class="underline"><span></span></div>
+                </h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#provider">Provider</a></li>
+                    <li><a href="#About-Us">About Us</a></li>
+                    <li><a href="login.html">Sign In</a></li>
+                </ul>
+            </div>
+            <div class="col">
+                <h3>News Letter <div class="underline"><span></span></div>
+                </h3>
+                <form>
+                    <i class="fa-regular fa-envelope"></i>
+                    <input type="email" placeholder="Enter your email id" required>
+                    <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+                <div class="social-ic">
+                    <i class="fa-brands fa-facebook"></i>
+                    <i class="fa-brands fa-instagram"></i>
+                    <i class="fa-brands fa-github"></i>
+                    <i class="fa-brands fa-linkedin"></i>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <p class="copyrights">Local Hands <i class="fa-regular fa-copyright"></i> 2025 - All Rights Reserved </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadBookings();
+            
+            // Add click event listeners to navbar links
+            document.querySelectorAll('.nav-center a').forEach(link => {
+                link.addEventListener('click', function(event) {
+                    const href = this.getAttribute('href');
+                    if (href && !href.startsWith('#')) {
+                        // Prevent default anchor behavior and navigate
+                        event.preventDefault();
+                        window.location.href = href;
+                    }
+                });
+            });
+        });
+
+        function loadBookings() {
+            const userBookingsString = localStorage.getItem('userBookings');
+            let userBookings = [];
+
+            if (userBookingsString) {
+                try {
+                    userBookings = JSON.parse(userBookingsString);
+                } catch (e) {
+                    console.error("Failed to parse user bookings from local storage:", e);
+                    userBookings = [];
+                }
+            }
+
+            const currentBookingsList = document.getElementById('currentBookingsList');
+            const pastBookingsList = document.getElementById('pastBookingsList');
+            const allBookingsList = document.getElementById('allBookingsList');
+            const noCurrentBookings = document.getElementById('noCurrentBookings');
+            const noPastBookings = document.getElementById('noPastBookings');
+            const noAllBookings = document.getElementById('noAllBookings');
+
+            currentBookingsList.innerHTML = '';
+            pastBookingsList.innerHTML = '';
+            allBookingsList.innerHTML = '';
+
+            let hasCurrentBookings = false;
+            let hasPastBookings = false;
+            let hasAllBookings = userBookings.length > 0;
+
+            userBookings.sort((a, b) => new Date(b.bookingTime) - new Date(a.bookingTime));
+
+            userBookings.forEach(booking => {
+                let status = booking.status || 'Pending';
+                let actionsHtml = '';
+
+                const isCurrentBooking = (status !== 'Completed' && status !== 'Canceled');
+
+                if (isCurrentBooking) {
+                    actionsHtml = `
+                        <button onclick="console.log('Chat with ${booking.providerName} initiated!')">Chat with Provider</button>
+                        <button onclick="console.log('Reschedule option clicked for ${booking.issue}!')">Reschedule</button>
+                        <button class="cancel-btn" onclick="confirmCancel('${booking.issue}', '${booking.bookingTime}')">Cancel Booking</button>
+                    `;
+                    hasCurrentBookings = true;
+                } else {
+                    actionsHtml = `
+                        <button class="review-btn" onclick="console.log('Leave a review for ${booking.issue}!')">Leave Review</button>
+                        <button onclick="console.log('Rebooking ${booking.issue}!')">Rebook</button>
+                    `;
+                    hasPastBookings = true;
+                }
+
+                let statusClass = '';
+                switch (status) {
+                    case 'Confirmed':
+                        statusClass = 'status-confirmed';
+                        break;
+                    case 'On the Way':
+                        statusClass = 'status-on-the-way';
+                        break;
+                    case 'In Progress':
+                        statusClass = 'status-in-progress';
+                        break;
+                    case 'Completed':
+                        statusClass = 'status-completed';
+                        break;
+                    case 'Canceled':
+                        statusClass = 'status-canceled';
+                        break;
+                    case 'Pending':
+                        statusClass = 'status-pending';
+                        break;
+                    default:
+                        statusClass = 'status-pending';
+                }
+
+                const bookingItemHtml = `
+                    <div class="booking-item">
+                        <div class="booking-header">
+                            <h4>${booking.issue}</h4>
+                            <span class="booking-status ${statusClass}">${status}</span>
+                        </div>
+                        <div class="booking-details">
+                            <p><strong>Date & Time:</strong> ${new Date(booking.bookingTime).toLocaleString()}</p>
+                            <p><strong>Service Provider:</strong> ${booking.providerName || 'N/A'}</p>
+                            <p><strong>Phone:</strong> ${booking.phone}</p>
+                            ${booking.estimatedArrival && isCurrentBooking ? `<p><strong>Estimated Arrival:</strong> ${booking.estimatedArrival}</p>` : ''}
+                            <p><strong>Address:</strong> ${booking.address}</p>
+                            <p><strong>Job Details:</strong> ${booking.issue}</p>
+                        </div>
+                        <div class="booking-actions">
+                            ${actionsHtml}
+                        </div>
+                    </div>
+                `;
+
+                if (isCurrentBooking) {
+                    currentBookingsList.insertAdjacentHTML('beforeend', bookingItemHtml);
+                } else {
+                    pastBookingsList.insertAdjacentHTML('beforeend', bookingItemHtml);
+                }
+                allBookingsList.insertAdjacentHTML('beforeend', bookingItemHtml);
+            });
+
+            noCurrentBookings.style.display = hasCurrentBookings ? 'none' : 'block';
+            noPastBookings.style.display = hasPastBookings ? 'none' : 'block';
+            noAllBookings.style.display = hasAllBookings ? 'none' : 'block';
+        }
+
+        function confirmCancel(issue, bookingTime) {
+            if (confirm(`Are you sure you want to cancel the booking for "${issue}" on ${new Date(bookingTime).toLocaleString()}?`)) {
+                let userBookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
+                let bookingFoundAndUpdated = false;
+                userBookings = userBookings.map(booking => {
+                    if (booking.issue === issue && booking.bookingTime === bookingTime) {
+                        booking.status = 'Canceled';
+                        bookingFoundAndUpdated = true;
+                    }
+                    return booking;
+                });
+
+                if (bookingFoundAndUpdated) {
+                    localStorage.setItem('userBookings', JSON.stringify(userBookings));
+                    console.log(`The booking for "${issue}" has been canceled.`);
+                    loadBookings();
+                } else {
+                    console.error("Could not find the booking to cancel.");
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -114,9 +114,9 @@ The solution streamlines both booking for users and profile creation for provide
 
 ## Team
 
+- **S.Naga Revanth Reddy** (23A91A12C1) – FSD With React Native
 - **K. Tarun** (23MH1A4226) – FSD With React Native
 - **G. Guru Charan** (23A91A1220) – FSD With React Native
-- **S. Revanth Reddy** (23A91A12C1) – FSD With React Native
 - **SK Thaheer** (23A91A1258) – FSD With React Native
 - **Gopi Naidu** (23MH1A4255) – FSD With React Native
 - **M. Bhuvan Raj** (23A91A1231) – FSD With React Native

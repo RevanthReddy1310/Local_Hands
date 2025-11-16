@@ -125,7 +125,7 @@ The solution streamlines both booking for users and profile creation for provide
 
 ## License
 
-Project is for educational/demo purposes. For any questions, reach out to the team at `email@gmail.com`.
+Project is for educational/demo purposes. For any questions, reach out to the team at `sattinagarevanthreddy13@gmail.com`.
 
 ---
 
